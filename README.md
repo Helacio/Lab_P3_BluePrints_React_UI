@@ -194,6 +194,12 @@ Este punto ya venía resuelto en el andamiaje, así que no tocamos código.
 - **Tabla con el número de puntos:** la segunda columna muestra `bp.points.length`.
 - **Botón Open:** la tercera columna tiene el botón `Open`, que llama a `openBlueprint` con el plano de esa fila.
 
+### 3. Seleccionar un plano y graficarlo
+
+- **Actualizar un campo de texto con el nombre del plano:** en `BlueprintsPage.jsx` el nombre del plano se muestra en un `<input>` de solo lectura. Su `value` sale de `current.name`, que es el estado global de Redux, así que se actualiza solo cuando cambia el plano seleccionado.
+- **Obtener los puntos del plano:** el botón `Open` llama a `openBlueprint`, que hace `dispatch(fetchBlueprint)`. Ese thunk pide `GET /api/blueprints/{author}/{name}` y guarda el plano completo en `current`.
+- **Dibujar los segmentos y marcar cada punto:** `BlueprintCanvas` recibe los puntos por props y los dibuja en un `useEffect`. Con `moveTo` y `lineTo` traza las líneas entre puntos consecutivos, y después marca cada punto con un círculo.
+
 ---
 
 ### Extensiones propuestas del reto

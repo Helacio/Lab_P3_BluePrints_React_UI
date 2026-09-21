@@ -114,7 +114,14 @@ export default function BlueprintsPage() {
       </section>
 
       <section className="card">
-        <h3 style={{ marginTop: 0 }}>Current blueprint: {current?.name || '—'}</h3>
+        <label htmlFor="current-blueprint-name">Current blueprint</label>
+        <input
+          id="current-blueprint-name"
+          className="input"
+          readOnly
+          value={current?.name || ''}
+          placeholder="—"
+        />
         <BlueprintCanvas points={current?.points || []} />
       </section>
     </div>
