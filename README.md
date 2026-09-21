@@ -184,6 +184,21 @@ VITE_USE_MOCK=true
 - Se agregó el atributo `id="blueprint-canvas"` al elemento `<canvas>`, para que el componente tenga un identificador propio y sea localizable desde el DOM.
 - Archivo modificado: `src/components/BlueprintCanvas.jsx`.
 
+### Requerimiento 2 — Listar los planos de un autor
+
+Cumplido por el andamiaje inicial; no requirió cambios de código. Verificado contra el código:
+
+- Entrada del nombre del autor: `src/pages/BlueprintsPage.jsx:42-47`.
+- Consulta al backend `GET /api/blueprints/{author}`: `BlueprintsPage.jsx:29` y `src/features/blueprints/blueprintsSlice.js:11-14`.
+- Tabla con las tres columnas: nombre del plano (`BlueprintsPage.jsx:72,90`), número de puntos (`:81,99`) y botón `Open` (`:102-104`).
+
+Observaciones detectadas, aún sin corregir:
+
+- `fetchByAuthor` no maneja `pending` ni `rejected` (`blueprintsSlice.js:54-56`), por lo que el indicador "Cargando..." (`BlueprintsPage.jsx:58`) nunca se muestra y un error de red se ve igual que "Sin resultados." (`:59`).
+- `fetchAuthors` se dispara al montar (`BlueprintsPage.jsx:17-19`) y su resultado (`authors`) no lo consume ningún componente.
+
+Sin verificación en ejecución: `node_modules` no está instalado y no hay backend levantado.
+
 ---
 
 ### Extensiones propuestas del reto
