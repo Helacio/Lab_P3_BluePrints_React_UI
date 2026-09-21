@@ -204,7 +204,7 @@ Este punto ya venía resuelto en el andamiaje, así que no tocamos código.
 
 Creamos la carpeta `src/services/` con los tres módulos que pide el punto.
 
-- **Los dos servicios con la misma interfaz:** `apimock.js` guarda planos de prueba en memoria y devuelve copias de esos datos, y `apiclient.js` consume el API REST real usando el `apiClient` de axios (el que agrega el token JWT). Los dos exponen los mismos cuatro métodos, así que son intercambiables.
+- **Los dos servicios con la misma interfaz:** `apimock.js` guarda planos de prueba en memoria y devuelve copias de esos datos, y `apiclient.js` consume el API REST real usando `httpClient`, que es el axios con los interceptores que agregan el token JWT. Los dos exponen los mismos cuatro métodos, así que son intercambiables.
 - **Los cuatro métodos:** `getAll` devuelve todos los planos, `getByAuthor` los de un autor, `getByAuthorAndName` un plano puntual y `create` agrega uno nuevo.
 - **Cambiar entre uno y otro:** `blueprintsService.js` importa los dos y elige según `VITE_USE_MOCK`. Ese módulo es el único que sabe cuál está activo.
 - **Cómo llega eso a la aplicación:** en `blueprintsSlice.js` los thunks ya no llaman a axios directo, ahora usan `blueprintsService`. El slice sigue haciendo lo mismo de antes, pero deja de saber cómo se piden los datos.
