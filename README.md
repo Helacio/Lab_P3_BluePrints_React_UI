@@ -177,6 +177,13 @@ VITE_USE_MOCK=true
 - `npm run format` – Prettier
 - `npm test` – Vitest
 
+## Cambios realizados
+
+### Requerimiento 1 — Canvas (lienzo)
+
+- Se agregó el atributo `id="blueprint-canvas"` al elemento `<canvas>`, para que el componente tenga un identificador propio y sea localizable desde el DOM.
+- Archivo modificado: `src/components/BlueprintCanvas.jsx`.
+
 ---
 
 ### Extensiones propuestas del reto
