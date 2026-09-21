@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import api from '../services/apiClient.js'
+import api from '../services/httpClient.js'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')

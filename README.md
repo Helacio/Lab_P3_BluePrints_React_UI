@@ -200,6 +200,17 @@ Este punto ya venía resuelto en el andamiaje, así que no tocamos código.
 - **Obtener los puntos del plano:** el botón `Open` llama a `openBlueprint`, que hace `dispatch(fetchBlueprint)`. Ese thunk pide `GET /api/blueprints/{author}/{name}` y guarda el plano completo en `current`.
 - **Dibujar los segmentos y marcar cada punto:** `BlueprintCanvas` recibe los puntos por props y los dibuja en un `useEffect`. Con `moveTo` y `lineTo` traza las líneas entre puntos consecutivos, y después marca cada punto con un círculo.
 
+### 4. Servicios: `apimock` y `apiclient`
+
+Creamos la carpeta `src/services/` con los tres módulos que pide el punto.
+
+- **Los dos servicios con la misma interfaz:** `apimock.js` guarda planos de prueba en memoria y devuelve copias de esos datos, y `apiclient.js` consume el API REST real usando el `apiClient` de axios (el que agrega el token JWT). Los dos exponen los mismos cuatro métodos, así que son intercambiables.
+- **Los cuatro métodos:** `getAll` devuelve todos los planos, `getByAuthor` los de un autor, `getByAuthorAndName` un plano puntual y `create` agrega uno nuevo.
+- **Cambiar entre uno y otro:** `blueprintsService.js` importa los dos y elige según `VITE_USE_MOCK`. Ese módulo es el único que sabe cuál está activo.
+- **Cómo llega eso a la aplicación:** en `blueprintsSlice.js` los thunks ya no llaman a axios directo, ahora usan `blueprintsService`. El slice sigue haciendo lo mismo de antes, pero deja de saber cómo se piden los datos.
+
+Con `VITE_USE_MOCK=true` en el `.env` la app funciona con el mock, sin necesidad de tener el backend levantado. Con `VITE_USE_MOCK=false` sale contra el API real.
+
 ---
 
 ### Extensiones propuestas del reto
