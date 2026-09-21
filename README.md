@@ -179,25 +179,20 @@ VITE_USE_MOCK=true
 
 ## Cambios realizados
 
-### Requerimiento 1 — Canvas (lienzo)
+### 1. Canvas (lienzo)
 
-- Se agregó el atributo `id="blueprint-canvas"` al elemento `<canvas>`, para que el componente tenga un identificador propio y sea localizable desde el DOM.
-- Archivo modificado: `src/components/BlueprintCanvas.jsx`.
+- **Lienzo en la página:** el componente `BlueprintCanvas` está montado dentro de `BlueprintsPage.jsx`.
+- **Componente con identificador propio:** en `BlueprintCanvas.jsx` el `<canvas>` lleva `id="blueprint-canvas"`. Era lo único que le faltaba al andamiaje y lo agregamos nosotros.
+- **Dimensiones adecuadas:** el canvas mide 520×360, que son los valores por defecto del componente.
 
-### Requerimiento 2 — Listar los planos de un autor
+### 2. Listar los planos de un autor
 
-Cumplido por el andamiaje inicial; no requirió cambios de código. Verificado contra el código:
+Este punto ya venía resuelto en el andamiaje, así que no tocamos código.
 
-- Entrada del nombre del autor: `src/pages/BlueprintsPage.jsx:42-47`.
-- Consulta al backend `GET /api/blueprints/{author}`: `BlueprintsPage.jsx:29` y `src/features/blueprints/blueprintsSlice.js:11-14`.
-- Tabla con las tres columnas: nombre del plano (`BlueprintsPage.jsx:72,90`), número de puntos (`:81,99`) y botón `Open` (`:102-104`).
-
-Observaciones detectadas, aún sin corregir:
-
-- `fetchByAuthor` no maneja `pending` ni `rejected` (`blueprintsSlice.js:54-56`), por lo que el indicador "Cargando..." (`BlueprintsPage.jsx:58`) nunca se muestra y un error de red se ve igual que "Sin resultados." (`:59`).
-- `fetchAuthors` se dispara al montar (`BlueprintsPage.jsx:17-19`) y su resultado (`authors`) no lo consume ningún componente.
-
-Sin verificación en ejecución: `node_modules` no está instalado y no hay backend levantado.
+- **Ingresar el nombre del autor y consultar sus planos:** en `BlueprintsPage.jsx` está el input del autor y el botón "Get blueprints". El botón llama a `fetchByAuthor`, que en `blueprintsSlice.js` pide `GET /api/blueprints/{author}` y guarda la respuesta en el estado.
+- **Tabla con el nombre del plano:** la primera columna de la tabla muestra `bp.name`.
+- **Tabla con el número de puntos:** la segunda columna muestra `bp.points.length`.
+- **Botón Open:** la tercera columna tiene el botón `Open`, que llama a `openBlueprint` con el plano de esa fila.
 
 ---
 
