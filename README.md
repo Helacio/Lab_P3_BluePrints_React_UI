@@ -166,7 +166,7 @@ VITE_USE_MOCK=true
    - [ ] Pruebas de `blueprintsSlice` (reducers puros).
    - [ ] Pruebas de componentes con Testing Library (render, interacción).
 7. **CI/Lint/Format**
-   - [ ] Activa **GitHub Actions** (workflow incluido) → lint + test + build.
+   - [x] Activa **GitHub Actions** (workflow incluido) → lint + test + build.
 8. **Docker (opcional)**
    - [ ] Crea `Dockerfile` (+ `compose`) para front + backend.
 
