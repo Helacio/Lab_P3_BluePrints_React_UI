@@ -20,11 +20,16 @@ Ver la especificación de glosario clave, consulta las [Definiciones del laborat
 
 ## Endpoints esperados (ajústalos si tu backend quedo diferente)
 
+*Se modifican los endpoints debido al formato manejado en los dos laboratorios anteriores:*
+
 - `GET /api/blueprints` → lista general o catálogo para derivar autores.
 - `GET /api/blueprints/{author}`
-- `GET /api/blueprints/{author}/{name}`
+- `GET /api/blueprints/{author}/{bpname}`
 - `POST /api/blueprints` (requiere JWT)
-- `POST /api/auth/login` → `{ token }`
+- `PUT /api/blueprints/{author}/{bpname}/points` (requiere JWT)
+- `POST /auth/login` → `{ access_token, token_type, expires_in }`
+
+> Todas las respuestas de `/api/**` vienen envueltas en `{ code, message, data }`; `apiclient` ya las desempaqueta para devolver solo `data`.
 
 Configura la URL base en `.env`.
 
@@ -32,10 +37,11 @@ Configura la URL base en `.env`.
 
 ```bash
 npm install
-cp .env.example .env
-# edita .env con la URL del backend
+copy .env.example .env   # en Windows; en Linux/macOS usar cp
 npm run dev
 ```
+
+Con `VITE_API_BASE_URL` vacío, el proxy de Vite reenvía `/api` y `/auth` al backend local en `http://localhost:8080`.
 
 Abre `http://localhost:5173`
 
@@ -62,7 +68,7 @@ blueprints-react-lab/
 │  ├─ components/
 │  ├─ features/blueprints/blueprintsSlice.js
 │  ├─ pages/
-│  ├─ services/apiClient.js   # axios + interceptores JWT
+│  ├─ services/httpClient.js   # axios + interceptores JWT
 │  ├─ store/index.js          # Redux Toolkit
 │  ├─ App.jsx, main.jsx, styles.css
 ├─ tests/
@@ -215,6 +221,15 @@ Creamos la carpeta `src/services/` con los tres módulos que pide el punto.
 - **Cómo llega eso a la aplicación:** en `blueprintsSlice.js` los thunks ya no llaman a axios directo, ahora usan `blueprintsService`. El slice sigue haciendo lo mismo de antes, pero deja de saber cómo se piden los datos.
 
 Con `VITE_USE_MOCK=true` en el `.env` la app funciona con el mock, sin necesidad de tener el backend levantado. Con `VITE_USE_MOCK=false` sale contra el API real.
+
+### 5. Conexión con el backend real
+
+Para que el front funcionara contra el API Spring Boot (Labs 3 y 4) hicimos cuatro ajustes:
+
+- **Proxy de Vite para CORS:** en `vite.config.js` agregamos un proxy que reenvía `/api` y `/auth` a `http://localhost:8080`. Como el navegador solo habla con el dev server, ya no hay bloqueo de CORS.
+- **`httpClient.js` con base relativa:** la `baseURL` quedó vacía (`''`) para que las peticiones pasen por el proxy. `VITE_API_BASE_URL` permite apuntar a otro backend (ej. uno desplegado en Azure) sin tocar el código.
+- **`apiclient.js` desempaqueta la respuesta:** el backend envuelve todo en `{ code, message, data }`; `apiclient` extrae `data` para mantener la misma interfaz que `apimock`.
+- **Login corregido:** `LoginPage` ahora llama a `POST /auth/login` (sin el prefijo `/api`) y guarda `access_token` (antes esperaba `token`). El interceptor de `httpClient` lo envía como `Authorization: Bearer` en cada request.
 
 ---
 
