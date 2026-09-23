@@ -3,27 +3,29 @@
 
 import api from './httpClient.js'
 
+const unwrap = ({ data }) => data.data
+
 const apiclient = {
   async getAll() {
-    const { data } = await api.get('/blueprints')
-    return data
+    const res = await api.get('/api/blueprints')
+    return unwrap(res)
   },
 
   async getByAuthor(author) {
-    const { data } = await api.get(`/blueprints/${encodeURIComponent(author)}`)
-    return data
+    const res = await api.get(`/api/blueprints/${encodeURIComponent(author)}`)
+    return unwrap(res)
   },
 
   async getByAuthorAndName(author, name) {
-    const { data } = await api.get(
-      `/blueprints/${encodeURIComponent(author)}/${encodeURIComponent(name)}`,
+    const res = await api.get(
+      `/api/blueprints/${encodeURIComponent(author)}/${encodeURIComponent(name)}`,
     )
-    return data
+    return unwrap(res)
   },
 
   async create(blueprint) {
-    const { data } = await api.post('/blueprints', blueprint)
-    return data
+    const res = await api.post('/api/blueprints', blueprint)
+    return unwrap(res)
   },
 }
 

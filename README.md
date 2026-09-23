@@ -44,8 +44,13 @@ Abre `http://localhost:5173`
 Crea un archivo `.env` en la raíz:
 
 ```variable
-VITE_API_BASE_URL=http://localhost:8080/api
+VITE_API_BASE_URL=
+VITE_USE_MOCK=false
 ```
+
+- `VITE_USE_MOCK=true` → usa `apimock` (datos en memoria, sin backend).
+- `VITE_USE_MOCK=false` → usa `apiclient` contra el backend real.
+- `VITE_API_BASE_URL` → URL del API vista desde el navegador. Déjala **vacía** en desarrollo: el proxy de Vite reenvía `/api` y `/auth` a `http://localhost:8080`, lo que evita problemas de CORS. En producción apúntala a la URL completa (ej. `https://tu-host/api`).
 
 > **Tip:** en producción usa variables seguras o un _reverse proxy_.
 
