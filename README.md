@@ -18,6 +18,66 @@
 
 Ver la especificación de glosario clave, consulta las [Definiciones del laboratorio](./DEFINICIONES.md).
 
+## Guía de ejecución para el lector
+
+Este repositorio es **solo el frontend** (React + Vite). El backend vive en el repo aparte `Lab_P2_BluePrints_Java21_API_Security_JWT` (Spring Boot 3 / Java 21 + seguridad JWT). Hay tres formas de correr el proyecto:
+
+### Opción A — Front contra el backend desplegado en Azure (recomendada para la revisión)
+
+El backend ya está desplegado y no requiere nada local:
+
+1. `npm install`
+2. Crear `.env` con:
+
+```variable
+VITE_API_BASE_URL=http://68.155.159.205:8080
+VITE_USE_MOCK=false
+```
+
+3. `npm run dev` y abrir `http://localhost:5173`.
+4. **Login** con `student` / `student123` (el token JWT queda en `localStorage` y viaja como `Authorization: Bearer` en cada request).
+
+> Si la VM de Azure está apagada, el front muestra el error "Servidor no disponible". Para encenderla: `az vm start -g ARSW-bluepritns -n arsw-vm`. Alternativamente usa la Opción B.
+
+### Opción B — Solo mock (sin backend)
+
+1. `npm install`
+2. En `.env`: `VITE_USE_MOCK=true` (y `VITE_API_BASE_URL=` vacío).
+3. `npm run dev`. No necesita backend ni login; autores de prueba: `juan` y `hernan`.
+
+### Opción C — Backend local + front con proxy
+
+1. En la carpeta del backend (`Lab_P2_BluePrints_Java21_API_Security_JWT`):
+
+```bash
+mvn -q -DskipTests spring-boot:run
+```
+
+   Con el perfil por defecto (`dev,identity`) los planos viven en memoria y vienen sembrados (`john/house`, `john/garage`, `jane/garden`). Si se quiere PostgreSQL: `docker compose up -d` y arrancar con `SPRING_PROFILES_ACTIVE=pg,identity`.
+
+2. En el front: `.env` con `VITE_API_BASE_URL=` (vacío) y `VITE_USE_MOCK=false`; `npm run dev`. El proxy de Vite reenvía `/api` y `/auth` a `http://localhost:8080` (sin problemas de CORS).
+
+### Recorrido de prueba sugerido
+
+1. Abrir `/login` → entrar con `student` / `student123`.
+2. En la página principal pulsar **Get blueprints** con el campo vacío → lista todos los blueprints (columna Author incluida).
+3. Buscar el autor `john` (o `felipechavarro` / `Diego` en Azure) → tabla con nombre, número de puntos y botones **Open** / **Delete**.
+4. Buscar un autor inexistente (ej. `jane` en Azure) → banner con mensaje amable y botón **Reintentar**.
+5. Pulsar **Open** → página protegida `/blueprints/:author/:name` con el canvas interactivo: cada click agrega un punto y **Guardar puntos** los persiste (PUT); **Descartar** los descarta; **Eliminar blueprint** borra (optimistic update con rollback).
+6. Ir a **Nuevo Blueprint** (`/blueprints/new`, ruta protegida: sin token redirige a `/login`) → crear un plano con puntos en JSON.
+7. Revisar la tarjeta **Top 5 por puntos** (memo selector) y el total de puntos.
+8. Alternar **modo oscuro/claro** con el botón sol/luna (logo y paleta cambian; el estado queda en `localStorage`).
+
+### Verificación (calidad)
+
+```bash
+npm test          # Vitest + Testing Library: 8 pruebas (slice, selectors, canvas, form, página)
+npm run lint      # ESLint
+npm run build     # build de producción con Vite
+```
+
+El workflow de CI en `.github/workflows/ci.yml` corre lint + test + build en cada push/PR.
+
 ## Endpoints esperados (ajústalos si tu backend quedo diferente)
 
 *Se modifican los endpoints debido al formato manejado en los dos laboratorios anteriores:*
