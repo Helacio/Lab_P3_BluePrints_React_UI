@@ -1,79 +1,158 @@
-:root {
-  --gap: 12px;
-  --radius: 14px;
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto;
-}
-* {
-  box-sizing: border-box;
-}
 body {
   margin: 0;
-  background: #0f172a;
-  color: #e2e8f0;
 }
-a {
-  color: inherit;
-  text-decoration: none;
-}
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-}
+
 .card {
-  background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: var(--radius);
-  padding: 16px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 1rem;
 }
+
+body,
+.card,
 .btn {
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: 1px solid #334155;
-  background: #1f2937;
-  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
 }
-.btn.primary {
-  background: #2563eb;
-  border-color: #1d4ed8;
-  color: white;
+
+/* ============================ TEMA OSCURO (NOCTURNO) ============================ */
+[data-bs-theme='dark'] {
+  --bs-body-bg: #0d1226;
+  --bs-body-color: #e7ecf5;
+  --bs-primary: #71a2b6;
+  --bs-primary-rgb: 113, 162, 182;
+  --bs-secondary: #750d37;
+  --bs-secondary-rgb: 117, 13, 55;
+  --bs-card-bg: #131a33;
+  --bs-border-color: #2a3354;
+  --bs-emphasis-color: #b3dec1;
+  --bs-link-color: #9fb8d9;
+  --bs-link-hover-color: #c3d4ea;
 }
-.grid {
-  display: grid;
-  gap: var(--gap);
+
+[data-bs-theme='dark'] body {
+  background:
+    radial-gradient(1100px 550px at 85% -10%, rgba(152, 38, 73, 0.32), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(77, 71, 190, 0.28), transparent 60%),
+    linear-gradient(160deg, #0d1226 0%, #160f2e 55%, #210124 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
-.grid.cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+/* Tarjetas glass con acento azul-violeta */
+[data-bs-theme='dark'] .card {
+  background: linear-gradient(165deg, rgba(113, 162, 182, 0.12), rgba(21, 15, 46, 0.55));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(113, 162, 182, 0.28);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(179, 222, 193, 0.08);
 }
-.input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #334155;
-  background: #0b1220;
-  color: #e2e8f0;
+
+/* Botón primario: degradado azul → violeta */
+[data-bs-theme='dark'] .btn-primary {
+  background: linear-gradient(135deg, #4f7fa8, #8a63c9);
+  border: 1px solid rgba(138, 99, 201, 0.65);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(113, 162, 182, 0.28);
 }
-label {
-  font-size: 0.9rem;
-  color: #94a3b8;
+
+[data-bs-theme='dark'] .btn-primary:hover,
+[data-bs-theme='dark'] .btn-primary:focus {
+  background: linear-gradient(135deg, #5d8fb8, #9a73d8);
+  border-color: rgba(154, 115, 216, 0.85);
+  color: #ffffff;
 }
-header {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
+
+[data-bs-theme='dark'] .btn-primary:active {
+  background: linear-gradient(135deg, #436e95, #7b54b8);
+  border-color: rgba(123, 84, 184, 0.9);
+  color: #ffffff;
 }
-nav a {
-  padding: 6px 10px;
-  border-radius: 8px;
+
+[data-bs-theme='dark'] .btn-outline-light {
+  --bs-btn-color: #dbe6f5;
+  --bs-btn-border-color: rgba(113, 162, 182, 0.55);
+  --bs-btn-hover-bg: rgba(113, 162, 182, 0.16);
+  --bs-btn-hover-border-color: #8a63c9;
+  --bs-btn-hover-color: #ffffff;
 }
-nav a.active {
-  background: #334155;
+
+[data-bs-theme='dark'] .btn-outline-danger {
+  --bs-btn-color: #ffb3c1;
+  --bs-btn-border-color: rgba(152, 38, 73, 0.85);
+  --bs-btn-hover-bg: #982649;
+  --bs-btn-hover-border-color: #982649;
+  --bs-btn-hover-color: #ffffff;
+}
+
+[data-bs-theme='dark'] .table {
+  --bs-table-striped-bg: rgba(113, 162, 182, 0.08);
+  --bs-table-hover-bg: rgba(138, 99, 201, 0.16);
+  --bs-table-border-color: rgba(113, 162, 182, 0.15);
+}
+
+[data-bs-theme='dark'] .alert {
+  border-radius: 0.75rem;
+}
+
+/* Textos dorados */
+.text-gold {
+  color: #e8b34b;
+}
+
+/* Título degradado dorado */
+.app-title {
+  background: linear-gradient(90deg, #f3d27a, #d9a441 45%, #c98f1e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================ TEMA CLARO ============================ */
+[data-bs-theme='light'] {
+  --bs-primary: #003459;
+  --bs-primary-rgb: 0, 52, 89;
+  --bs-body-bg: #f5f8fc;
+  --bs-body-color: #1c2433;
+  --bs-emphasis-color: #982649;
+  --bs-link-color: #982649;
+}
+
+[data-bs-theme='light'] body {
+  background:
+    radial-gradient(1000px 500px at 90% -10%, rgba(122, 58, 237, 0.12), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(0, 52, 89, 0.14), transparent 60%),
+    #f5f8fc;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+[data-bs-theme='light'] .card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 52, 89, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 52, 89, 0.08);
+}
+
+[data-bs-theme='light'] .btn-primary {
+  background: linear-gradient(135deg, #003459, #6d3f8f);
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(0, 52, 89, 0.28);
+}
+
+[data-bs-theme='light'] .btn-primary:hover,
+[data-bs-theme='light'] .btn-primary:focus {
+  background: linear-gradient(135deg, #0a4a7a, #7d4fa3);
+  color: #ffffff;
+}
+
+[data-bs-theme='light'] .btn-primary:active {
+  background: linear-gradient(135deg, #00294a, #5c3278);
+  color: #ffffff;
 }

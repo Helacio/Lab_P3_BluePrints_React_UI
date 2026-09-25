@@ -150,18 +150,18 @@ VITE_USE_MOCK=true
 ## 📌 Recomendaciones y actividades sugeridas para el exito del laboratorio
 
 1. **Redux avanzado**
-   - [ ] Agrega estados `loading/error` por _thunk_ y muéstralos en la UI.
-   - [ ] Implementa _memo selectors_ para derivar el top-5 de blueprints por cantidad de puntos.
+   - [x] Agrega estados `loading/error` por _thunk_ y muéstralos en la UI.
+   - [x] Implementa _memo selectors_ para derivar el top-5 de blueprints por cantidad de puntos.
 2. **Rutas protegidas**
-   - [ ] Crea un componente `<PrivateRoute>` y protege la creación/edición.
+   - [x] Crea un componente `<PrivateRoute>` y protege la creación/edición.
 3. **CRUD completo**
-   - [ ] Implementa `PUT /api/blueprints/{author}/{name}` y `DELETE ...` en el slice y en la UI.
-   - [ ] Optimistic updates (revertir si falla).
+   - [x] Implementa `PUT /api/blueprints/{author}/{name}/points` y `DELETE ...` en el slice y en la UI.
+   - [x] Optimistic updates (revertir si falla).
 4. **Dibujo interactivo**
-   - [ ] Reemplaza el `svg` por un lienzo donde el usuario haga _click_ para agregar puntos.
-   - [ ] Botón “Guardar” que envíe el blueprint.
+   - [x] Reemplaza el `svg` por un lienzo donde el usuario haga _click_ para agregar puntos.
+   - [x] Botón “Guardar” que envíe el blueprint.
 5. **Errores y _Retry_**
-   - [ ] Si `GET` falla, muestra un banner y un botón **Reintentar** que dispare el thunk.
+   - [x] Si `GET` falla, muestra un banner y un botón **Reintentar** que dispare el thunk.
 6. **Testing**
    - [ ] Pruebas de `blueprintsSlice` (reducers puros).
    - [ ] Pruebas de componentes con Testing Library (render, interacción).
@@ -230,6 +230,20 @@ Para que el front funcionara contra el API Spring Boot (Labs 3 y 4) hicimos cuat
 - **`httpClient.js` con base relativa:** la `baseURL` quedó vacía (`''`) para que las peticiones pasen por el proxy. `VITE_API_BASE_URL` permite apuntar a otro backend (ej. uno desplegado en Azure) sin tocar el código.
 - **`apiclient.js` desempaqueta la respuesta:** el backend envuelve todo en `{ code, message, data }`; `apiclient` extrae `data` para mantener la misma interfaz que `apimock`.
 - **Login corregido:** `LoginPage` ahora llama a `POST /auth/login` (sin el prefijo `/api`) y guarda `access_token` (antes esperaba `token`). El interceptor de `httpClient` lo envía como `Authorization: Bearer` en cada request.
+
+### 6. Extras (rutas protegidas, CRUD, canvas interactivo y Bootstrap)
+
+- **Estados `loading/error` por thunk:** el slice ahora lleva `status/error` para la lista, `detailStatus/detailError` para el detalle y `saveStatus/saveError` para las mutaciones, y la UI los muestra (spinners, banners y alerts).
+- **Memo selectors:** en `features/blueprints/selectors.js`, `selectTop5ByPoints` deriva el top-5 de blueprints por cantidad de puntos con `createSelector` y se muestra en `BlueprintsPage`.
+- **Rutas protegidas:** `components/PrivateRoute.jsx` redirige a `/login` si no hay token. Protege `/blueprints/new` (creación) y `/blueprints/:author/:name` (edición).
+- **CRUD completo:**
+  - `apimock` y `apiclient` exponen ahora `updatePoints` (`PUT /api/blueprints/{author}/{name}/points`) y `delete` (`DELETE /api/blueprints/{author}/{name}`).
+  - El slice agrega `updateBlueprintPoints` y `deleteBlueprint` con _optimistic updates_: al agregar puntos o eliminar se actualiza el estado de inmediato y, si el backend falla, se revierte (`_rollback`).
+  - Nota: el backend del Lab_P2 solo implementa el `PUT .../points`; el `DELETE` funciona contra el mock y contra el API real devolverá 405 hasta que el backend lo exponga.
+- **Dibujo interactivo:** `BlueprintDetailPage` reemplazó el `svg` por el `BlueprintCanvas` interactivo: cada click agrega un punto y el botón **Guardar puntos** los envía (vía `updateBlueprintPoints`). El canvas del listado sigue siendo de solo lectura.
+- **Errores y Retry:** si `fetchByAuthor` o `fetchBlueprint` fallan, la UI muestra un banner con el error y un botón **Reintentar** que vuelve a disparar el thunk.
+- **Bootstrap:** se instaló `bootstrap` (tema oscuro con `data-bs-theme="dark"`) y todos los componentes se migraron a sus clases (`btn`, `card`, `table`, `form-control`, `alert`, `spinner-border`).
+- **Pruebas:** se agregaron tests del slice (rollback optimista de delete y de puntos, selector top-5) y quedaron 8 tests pasando.
 
 ---
 

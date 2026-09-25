@@ -83,6 +83,24 @@ const apimock = {
     blueprints.push(clone(blueprint))
     return clone(blueprint)
   },
+
+  async updatePoints(author, name, point) {
+    const bp = blueprints.find((b) => b.author === author && b.name === name)
+    if (!bp) {
+      throw new Error(`No existe el plano ${name} del autor ${author}`)
+    }
+    bp.points.push(clone(point))
+    return clone(bp)
+  },
+
+  async delete(author, name) {
+    const idx = blueprints.findIndex((b) => b.author === author && b.name === name)
+    if (idx === -1) {
+      throw new Error(`No existe el plano ${name} del autor ${author}`)
+    }
+    const [removed] = blueprints.splice(idx, 1)
+    return clone(removed)
+  },
 }
 
 export default apimock

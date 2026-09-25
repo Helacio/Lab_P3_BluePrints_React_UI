@@ -16,42 +16,51 @@ export default function BlueprintForm({ onSubmit }) {
   }
 
   return (
-    <form onSubmit={handle} className="card">
-      <h3 style={{ marginTop: 0 }}>Crear Blueprint</h3>
-      <div className="grid cols-2">
-        <div>
-          <label htmlFor="bp-author">Autor</label>
+    <form onSubmit={handle} className="card p-3">
+      <h3 className="mt-0">Crear Blueprint</h3>
+      <div className="row g-3">
+        <div className="col">
+          <label htmlFor="bp-author" className="form-label">
+            Autor
+          </label>
           <input
             id="bp-author"
-            className="input"
+            className="form-control"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             placeholder="juan.perez"
           />
         </div>
-        <div>
-          <label htmlFor="bp-name">Nombre</label>
+        <div className="col">
+          <label htmlFor="bp-name" className="form-label">
+            Nombre
+          </label>
           <input
             id="bp-name"
-            className="input"
+            className="form-control"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="mi-dibujo"
           />
         </div>
       </div>
-      <div style={{ marginTop: 12 }}>
-        <label htmlFor="bp-points">Puntos (JSON)</label>
+      <div className="mt-3">
+        <label htmlFor="bp-points" className="form-label">
+          Puntos (JSON)
+        </label>
         <textarea
           id="bp-points"
-          className="input"
+          className="form-control"
           rows="5"
           value={pointsJSON}
           onChange={(e) => setPointsJSON(e.target.value)}
         />
       </div>
-      <div style={{ marginTop: 12 }}>
-        <button className="btn primary">Guardar</button>
+      <div className="mt-3">
+        <button className="btn btn-primary">
+          <i className="bi bi-save me-1" />
+          Guardar
+        </button>
       </div>
     </form>
   )

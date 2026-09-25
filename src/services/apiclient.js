@@ -27,6 +27,21 @@ const apiclient = {
     const res = await api.post('/api/blueprints', blueprint)
     return unwrap(res)
   },
+
+  async updatePoints(author, name, point) {
+    const res = await api.put(
+      `/api/blueprints/${encodeURIComponent(author)}/${encodeURIComponent(name)}/points`,
+      point,
+    )
+    return unwrap(res)
+  },
+
+  async delete(author, name) {
+    const res = await api.delete(
+      `/api/blueprints/${encodeURIComponent(author)}/${encodeURIComponent(name)}`,
+    )
+    return res.data?.data ?? null
+  },
 }
 
 export default apiclient

@@ -4,6 +4,8 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import store from './store'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import './styles.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

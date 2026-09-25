@@ -1,14 +1,17 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import BlueprintsPage from '../src/pages/BlueprintsPage.jsx'
 
 // Mock de thunks del slice para no requerir backend
 vi.mock('../src/features/blueprints/blueprintsSlice.js', () => ({
   fetchAuthors: () => ({ type: 'blueprints/fetchAuthors' }),
+  fetchAllBlueprints: () => ({ type: 'blueprints/fetchAllBlueprints' }),
   fetchByAuthor: (author) => ({ type: 'blueprints/fetchByAuthor', payload: author }),
   fetchBlueprint: (payload) => ({ type: 'blueprints/fetchBlueprint', payload }),
+  deleteBlueprint: (payload) => ({ type: 'blueprints/deleteBlueprint', payload }),
 }))
 
 function makeStore(preloaded) {
@@ -33,7 +36,9 @@ describe('BlueprintsPage', () => {
     const spy = vi.spyOn(store, 'dispatch')
     render(
       <Provider store={store}>
-        <BlueprintsPage />
+        <MemoryRouter>
+          <BlueprintsPage />
+        </MemoryRouter>
       </Provider>,
     )
 

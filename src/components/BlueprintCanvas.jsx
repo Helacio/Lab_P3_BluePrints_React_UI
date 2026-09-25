@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export default function BlueprintCanvas({ points = [], width = 520, height = 360 }) {
+export default function BlueprintCanvas({ points = [], width = 520, height = 360, onCanvasClick }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -8,9 +8,9 @@ export default function BlueprintCanvas({ points = [], width = 520, height = 360
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = '#0b1220'
+    ctx.fillStyle = '#0a1633'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.strokeStyle = 'rgba(148,163,184,0.15)'
+    ctx.strokeStyle = 'rgba(113,162,182,0.10)'
     ctx.lineWidth = 1
     for (let x = 0; x < canvas.width; x += 40) {
       ctx.beginPath()
@@ -25,7 +25,7 @@ export default function BlueprintCanvas({ points = [], width = 520, height = 360
       ctx.stroke()
     }
     if (points.length > 1) {
-      ctx.strokeStyle = '#93c5fd'
+      ctx.strokeStyle = '#7ab7d4'
       ctx.lineWidth = 2
       ctx.beginPath()
       ctx.moveTo(points[0].x, points[0].y)
@@ -35,7 +35,7 @@ export default function BlueprintCanvas({ points = [], width = 520, height = 360
       }
       ctx.stroke()
     }
-    ctx.fillStyle = '#fbbf24'
+    ctx.fillStyle = '#c084fc'
     for (const p of points) {
       ctx.beginPath()
       ctx.arc(p.x, p.y, 4, 0, Math.PI * 2)
@@ -43,18 +43,31 @@ export default function BlueprintCanvas({ points = [], width = 520, height = 360
     }
   }, [points])
 
+  const handleClick = (e) => {
+    if (!onCanvasClick) return
+    const canvas = ref.current
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = canvas.width / rect.width
+    const scaleY = canvas.height / rect.height
+    const x = Math.round((e.clientX - rect.left) * scaleX)
+    const y = Math.round((e.clientY - rect.top) * scaleY)
+    onCanvasClick({ x, y })
+  }
+
   return (
     <canvas
       id="blueprint-canvas"
       ref={ref}
       width={width}
       height={height}
+      onClick={handleClick}
       style={{
-        background: '#0b1220',
-        border: '1px solid #334155',
+        background: '#0a1633',
+        border: '1px solid rgba(138, 99, 201, 0.6)',
         borderRadius: 12,
         width: '100%',
         maxWidth: width,
+        cursor: onCanvasClick ? 'crosshair' : 'default',
       }}
     />
   )
